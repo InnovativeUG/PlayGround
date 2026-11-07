@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#101916" />
+  <title>Utility Empire — Field Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head>
+<body>
+  <main id="game" aria-label="Utility Empire 3D game">
+    <canvas id="world"></canvas>
+    <div class="vignette"></div>
+    <div id="start-screen" class="start-screen">
+      <div class="intro-card">
+        <div class="brand-mark">UE<span>+</span></div>
+        <div class="eyebrow">FIELD OPERATIONS · STATE OF PACIFICA</div>
+        <h1>Build the<br><em>backbone.</em></h1>
+        <p>One state. Five regions. A career built from the ground up.</p>
+        <label class="name-label" for="player-name">YOUR FIELD NAME</label>
+        <input id="player-name" maxlength="18" value="Alex Morgan" autocomplete="off" />
+        <button id="start-button" class="primary-button">CLOCK IN <span>↗</span></button>
+        <div class="microcopy">NEW HIRE · GENERAL LABORER · DAY 01</div>
+      </div>
+      <div class="intro-foot"><span>UTILITY EMPIRE</span><span>AN OPEN-WORLD CAREER SIMULATOR</span></div>
+    </div>
+    <section id="hud" class="hud hidden">
+      <header class="topbar">
+        <div class="brand-small">UE<span>+</span><b>UTILITY EMPIRE</b></div>
+        <div class="region-tag"><i></i><span id="region-name">HARBOR BAY</span><small>STATE ROUTE 08</small></div>
+        <div class="top-right"><div class="weather"><span id="weather-icon">☀</span><span id="weather-label">CLEAR</span></div><div class="clock"><span id="clock-time">08:15</span><small>MON · DAY 01</small></div><button id="map-button" title="Map [M]">⌖</button><button id="menu-button" title="Career [Tab]">☰</button></div>
+      </header>
+      <div class="left-stack">
+        <div class="profile-panel glass"><div class="avatar" id="avatar-icon">AM</div><div><div class="profile-name" id="hud-name">ALEX MORGAN</div><div class="profile-role" id="role-label">UNEMPLOYED · SEEKING WORK</div></div><div class="rank">01<small>LVL</small></div></div>
+        <div class="needs-panel glass"><div class="needs-head"><span>PERSONAL</span><span id="money">$2,400</span></div><div class="need-row"><span>ENERGY</span><div class="meter"><i id="energy-meter"></i></div><span id="energy-value">92</span></div><div class="need-row"><span>HUNGER</span><div class="meter amber"><i id="hunger-meter"></i></div><span id="hunger-value">84</span></div></div>
+      </div>
+      <div class="job-panel glass" id="job-panel"><div class="job-label"><i></i><span id="job-state">CAREER OFFICE</span></div><div class="job-title" id="job-title">Start your story</div><div class="job-desc" id="job-desc">Find work at the workforce center in Harbor Bay.</div><div class="job-objective"><span class="objective-dot"></span><span id="objective-text">Explore the city · Workforce Center</span><span class="distance" id="objective-distance">1.2 km</span></div><div class="job-progress"><i id="job-progress-fill"></i></div><div class="job-footer"><span id="job-step">CAREER · ENTRY LEVEL</span><span id="job-percent">0%</span></div></div>
+      <div class="interaction hidden" id="interaction"><span class="keycap">E</span><span id="interaction-label">INTERACT</span></div>
+      <div class="controls-hint"><span>W A S D <i>MOVE</i></span><span>SHIFT <i>RUN</i></span><span>E <i>INTERACT</i></span><span>F <i>VEHICLE</i></span><span>V <i>CAMERA</i></span></div>
+      <div class="toast hidden" id="toast"></div>
+      <section id="conversation" class="conversation glass hidden" aria-label="Conversation with NPC"><header><div><div class="eyebrow" id="conversation-role">FIELD RADIO</div><h2 id="conversation-name">Dispatcher</h2></div><button id="conversation-close" class="drawer-close" aria-label="Close conversation">×</button></header><div class="conversation-status"><span class="status-dot"></span><span id="conversation-presence">AVAILABLE · HARBOR BAY</span><span id="voice-status">TEXT FALLBACK READY</span></div><div id="conversation-log" class="conversation-log" aria-live="polite"></div><form id="conversation-form"><input id="conversation-input" maxlength="240" autocomplete="off" placeholder="Talk naturally… e.g. what work do you have?" aria-label="Your message"><button id="voice-button" type="button" title="Speak using microphone">🎙</button><button type="submit" class="send-button">SEND</button></form><footer><button id="radio-button" type="button">RADIO · R</button><span>NPC MEMORY SAVED ON THIS DEVICE</span></footer></section>
+      <div class="career-drawer glass hidden" id="career-drawer"><button class="drawer-close" id="drawer-close">×</button><div class="eyebrow">YOUR CAREER · 01</div><h2>Make a living.<br><em>Build a legacy.</em></h2><p class="drawer-intro">Start at the workforce center and take your first field assignment. Experience earns promotions, trust, and better contracts.</p><div class="career-path"><div class="career-node active"><span>01</span><div><b>General laborer</b><small>$24/hr · Entry level</small></div><i>AVAILABLE</i></div><div class="career-node"><span>02</span><div><b>Utility technician</b><small>Complete 3 field contracts</small></div><i>LOCKED</i></div><div class="career-node"><span>03</span><div><b>Foreman</b><small>Lead a crew of your own</small></div><i>LOCKED</i></div><div class="career-node"><span>04</span><div><b>Company owner</b><small>Build the empire</small></div><i>LOCKED</i></div></div><button id="drawer-work" class="primary-button">FIND WORK <span>↗</span></button></div>
+      <div class="map-drawer glass hidden" id="map-drawer"><button class="drawer-close" id="map-close">×</button><div class="eyebrow">PACIFICA · FIELD ATLAS</div><h2>Five regions.<br><em>One connected state.</em></h2><div class="region-list" id="region-list"></div><div class="map-note">DRIVE TO THE REGIONAL GATE TO TRAVEL · ROADS ARE OPEN</div></div>
+      <div class="mobile-controls" id="mobile-controls"><div class="dpad"><button data-move="forward">▲</button><div><button data-move="left">◀</button><button data-move="back">▼</button><button data-move="right">▶</button></div></div><div class="action-pad"><button id="touch-run">RUN</button><button id="touch-interact">E</button><button id="touch-vehicle">DRIVE</button></div></div>
+      <div class="crosshair"><i></i><i></i></div>
+      <div class="bottom-right"><span>THIRD PERSON</span><span>·</span><span id="vehicle-state">ON FOOT</span></div>
+    </section>
+    <div id="loading" class="loading hidden"><div class="loader"></div><span>PREPARING FIELD SITE</span></div>
+  </main>
+  <script type="module" src="game.js"></script>
+</body>
+</html>
